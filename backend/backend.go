@@ -10,7 +10,7 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
-	_ "net/http"
+	"net/http"
 	"os"
 	"time"
 	"encoding/gob"
@@ -38,7 +38,12 @@ func getConfig() *oauth2.Config {
 }
 
 func getService(config *oauth2.Config, token *oauth2.Token) *drive.Service {
-	client := config.Client(context.Background(), token)
+	tr := &http.Transport{
+		MaxIdleConns: 200,
+		MaxIdleConnsPerHost: 200,
+	}
+	tclient := &http.Client{Transport: tr}
+	client := config.Client(context.WithValue(context.Background(), oauth2.HTTPClient, tclient), token)
 	service, err := drive.New(client)
 	if err != nil {
 		return nil
