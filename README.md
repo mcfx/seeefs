@@ -36,4 +36,4 @@ Just edit `backend/backend.go`, it should be not very difficult to change to oth
 
 - Optimize the transfer to google drive, to earlier download the pieces (of blocks) which is required earlier.
 
-- Directly writing support.
+- ~~Directly writing support.~~
